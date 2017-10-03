@@ -3,7 +3,7 @@
 	Properties
 	{
 		_MainTex ("Texture", 2D) = "white" {}
-		_Lookup ("Lookup", 2D) = "white" {}
+		_Lookup ("Cutout", 2D) = "white" {}
 
 		_Color ("Color", Color) = (1, 1, 1, 1)
 	}
@@ -51,8 +51,13 @@
 				float4 col = tex2D(_MainTex, i.uv);
 				float4 lookup = tex2D(_Lookup, i.uv);
 
-				bool x = lookup == (0,0,0,0);
-				col = x ? _Color : col;
+				bool x = lookup == float4(0,0,0,0);
+
+				float4 _ColorNew = col * _Color;
+
+				_ColorNew.a = 0;
+
+				col = x ? _ColorNew : col;
 
 				return col;
 			}
